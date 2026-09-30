@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imperial College Triathlon Club</title>
+<meta name="description" content="Imperial College Triathlon Club — student-run swim, bike and run training in London. All levels welcome.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAFAF7;
+    --ink:#171310;
+    --red:#8C1F2F;
+    --red-deep:#6B1723;
+    --line:#E1DCD3;
+    --muted:#6E675E;
+    --white:#FFFFFF;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter', sans-serif; font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:'Archivo', sans-serif; margin:0; line-height:1.05; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  .eyebrow-num{
+    font-family:'Archivo', sans-serif; font-weight:800; color:var(--red);
+    font-variant-numeric: tabular-nums;
+  }
+  :focus-visible{ outline:2px solid var(--red); outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+  /* ── NAV ── */
+  header{ background:var(--ink); }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; max-width:1180px; margin:0 auto;
+  }
+  nav img{ height:26px; width:auto; display:block; }
+  .nav-links{ display:flex; align-items:center; gap:34px; list-style:none; margin:0; padding:0; }
+  .nav-links a{
+    text-decoration:none; color:rgba(255,255,255,0.8);
+    font-size:0.92rem; font-weight:500; transition:color .15s;
+  }
+  .nav-links a:hover{ color:var(--white); }
+  .nav-join{
+    background:var(--red); color:var(--white); text-decoration:none;
+    padding:9px 20px; font-size:0.88rem; font-weight:600; border-radius:2px;
+    transition:background .15s;
+  }
+  .nav-join:hover{ background:var(--red-deep); }
+  .nav-toggle{ display:none; background:none; border:0; padding:4px; cursor:pointer; }
+  .nav-toggle span{ display:block; width:22px; height:2px; background:#fff; margin:5px 0; }
+  .mobile-panel{ display:none; background:var(--ink); border-top:1px solid rgba(255,255,255,0.1); }
+  .mobile-panel.open{ display:block; }
+  .mobile-panel ul{ list-style:none; margin:0; padding:8px 32px 20px; display:flex; flex-direction:column; gap:2px; }
+  .mobile-panel a{
+    color:rgba(255,255,255,0.85); text-decoration:none; padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,0.08); font-size:1rem;
+  }
+
+  /* ── HERO ── */
+  .hero{ padding:88px 0 96px; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center; }
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.1rem); font-weight:900; letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  .hero-sub{
+    margin-top:22px; font-size:1.1rem; line-height:1.6; color:var(--muted);
+    max-width:34ch;
+  }
+  .hero-cta{ margin-top:34px; display:flex; gap:16px; align-items:center; }
+  .btn-primary{
+    background:var(--ink); color:var(--white); text-decoration:none;
+    padding:14px 26px; font-size:0.95rem; font-weight:600; border-radius:2px;
+    transition:background .15s;
+  }
+  .btn-primary:hover{ background:#000; }
+  .btn-text{ text-decoration:underline; text-underline-offset:4px; font-size:0.95rem; font-weight:500; color:var(--ink); }
+
+  /* course graphic */
+  .course-chart{ display:flex; flex-direction:column; gap:20px; }
+  .chart-row{ }
+  .chart-label{
+    display:flex; justify-content:space-between; font-size:0.85rem;
+    font-weight:600; margin-bottom:7px;
+  }
+  .chart-label span:last-child{ color:var(--muted); font-weight:500; }
+  .chart-track{ background:var(--line); height:14px; border-radius:2px; overflow:hidden; }
+  .chart-fill{ height:100%; background:var(--ink); border-radius:2px; }
+
+  /* ── STATS BAND ── */
+  .stats-band{ background:var(--red); color:var(--white); padding:40px 0; }
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+  .stat{ padding:0 24px; border-left:1px solid rgba(255,255,255,0.25); }
+  .stat:first-child{ border-left:0; padding-left:0; }
+  .stat-num{ font-family:'Archivo', sans-serif; font-weight:900; font-size:2rem; font-variant-numeric:tabular-nums; }
+  .stat-label{ font-size:0.8rem; color:rgba(255,255,255,0.75); margin-top:4px; }
+
+  /* ── COURSE / SEQUENCE ── */
+  .course{ padding:104px 0; }
+  .section-head{ max-width:44ch; margin-bottom:56px; }
+  .section-head h2{ font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; }
+  .section-head p{ margin-top:14px; color:var(--muted); font-size:1.02rem; line-height:1.6; }
+
+  .sequence{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+  .leg{ padding:0 32px 0 0; border-right:1px solid var(--line); }
+  .leg:last-child{ border-right:0; padding-right:0; }
+  .leg:not(:first-child){ padding-left:32px; }
+  .leg-num{ font-size:2.6rem; font-weight:900; }
+  .leg h3{ font-size:1.3rem; font-weight:800; margin-top:14px; text-transform:uppercase; letter-spacing:0.01em; }
+  .leg p{ margin-top:12px; color:var(--muted); line-height:1.6; font-size:0.96rem; }
+  .leg a{ display:inline-block; margin-top:16px; font-size:0.9rem; font-weight:600; text-decoration:underline; text-underline-offset:4px; }
+
+  /* ── ABOUT ── */
+  .about{ background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:104px 0; }
+  .about-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:center; }
+  .about-img{ aspect-ratio:4/5; background:var(--line); border-radius:2px; overflow:hidden; }
+  .about-img img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .about h2{ font-size:clamp(1.8rem,3vw,2.4rem); font-weight:800; }
+  .about p{ margin-top:20px; color:var(--muted); line-height:1.7; font-size:1.02rem; max-width:52ch; }
+
+  /* ── JOIN ── */
+  .join{ background:var(--ink); color:var(--white); padding:88px 0; text-align:left; }
+  .join-inner{ display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap; }
+  .join h2{ font-size:clamp(1.8rem,3vw,2.3rem); font-weight:800; max-width:20ch; }
+  .join p{ margin-top:12px; color:rgba(255,255,255,0.65); max-width:40ch; line-height:1.6; }
+  .join .btn-primary{ background:var(--red); }
+  .join .btn-primary:hover{ background:var(--red-deep); }
+
+  /* ── NEWS ── */
+  .news{ padding:104px 0; }
+  .news-grid{ display:grid; grid-template-columns:1fr 1.4fr; gap:64px; }
+  .news-col-label{ font-size:0.85rem; font-weight:600; color:var(--muted); margin-bottom:20px; }
+  .news-item{ display:block; padding:16px 0; border-bottom:1px solid var(--line); text-decoration:none; color:var(--ink); font-weight:500; }
+  .news-empty{ color:var(--muted); font-size:0.95rem; padding:16px 0; }
+  .blog-item{ padding:20px 0; border-bottom:1px solid var(--line); }
+  .blog-item h4{ font-family:'Archivo', sans-serif; font-weight:700; font-size:1.05rem; }
+  .blog-item p{ margin-top:8px; color:var(--muted); font-size:0.92rem; line-height:1.55; }
+
+  /* ── FOOTER ── */
+  footer{ background:var(--ink); color:rgba(255,255,255,0.55); padding:64px 0 32px; }
+  .footer-grid{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:40px; }
+  footer img{ height:24px; width:auto; opacity:0.9; }
+  footer p.tagline{ margin-top:16px; font-size:0.9rem; max-width:26ch; line-height:1.6; }
+  footer h4{ font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:14px; }
+  footer ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  footer a{ text-decoration:none; color:rgba(255,255,255,0.6); font-size:0.92rem; }
+  footer a:hover{ color:#fff; }
+  .footer-bottom{ margin-top:56px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1); font-size:0.82rem; }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .hero-grid, .about-grid{ grid-template-columns:1fr; }
+    .about-grid{ }
+    .about-img{ order:-1; aspect-ratio:16/10; }
+    .sequence{ grid-template-columns:1fr; gap:36px; }
+    .leg{ border-right:0; padding:0 !important; border-left:2px solid var(--line); padding-left:20px !important; }
+    .stats-grid{ grid-template-columns:repeat(2,1fr); row-gap:24px; }
+    .stat:nth-child(3){ border-left:0; padding-left:0; }
+    .news-grid{ grid-template-columns:1fr; gap:48px; }
+    .footer-grid{ grid-template-columns:1fr 1fr; row-gap:32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="tri-index-v2.html"><img src="images/ictri.svg" alt="ICTRI"></a>
+    <ul class="nav-links">
+      <li><a href="swim.html">Swim</a></li>
+      <li><a href="bike.html">Bike</a></li>
+      <li><a href="run.html">Run</a></li>
+      <li><a href="tri-index-v2.html#news">News &amp; Blog</a></li>
+      <li><a href="tri-club.html">About</a></li>
+    </ul>
+    <a href="tri-club.html#join" class="nav-join">Join the club</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-panel" id="mobilePanel">
+    <ul>
+      <li><a href="swim.html">Swim</a></li>
+      <li><a href="bike.html">Bike</a></li>
+      <li><a href="run.html">Run</a></li>
+      <li><a href="tri-index-v2.html#news">News &amp; Blog</a></li>
+      <li><a href="tri-club.html">About</a></li>
+      <li><a href="tri-club.html#join">Join the club</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Imperial College<br>Triathlon Club</h1>
+      <p class="hero-sub">A student club for swimmers, cyclists and runners who train for one sport, together. Every level welcome, from first open water swim to first finish line.</p>
+      <div class="hero-cta">
+        <a href="tri-club.html#join" class="btn-primary">Join the club</a>
+        <a href="#course" class="btn-text">See the course</a>
+      </div>
+    </div>
+    <div class="course-chart" aria-hidden="true">
+      <div class="chart-row">
+        <div class="chart-label"><span>Swim</span><span>1.5 km</span></div>
+        <div class="chart-track"><div class="chart-fill" style="width:14%"></div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label"><span>Bike</span><span>40 km</span></div>
+        <div class="chart-track"><div class="chart-fill" style="width:100%"></div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label"><span>Run</span><span>10 km</span></div>
+        <div class="chart-track"><div class="chart-fill" style="width:26%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-band">
+  <div class="wrap stats-grid">
+    <div class="stat"><div class="stat-num">30+</div><div class="stat-label">Members</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Sessions a week</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Disciplines</div></div>
+    <div class="stat"><div class="stat-num">1</div><div class="stat-label">Finish line</div></div>
+  </div>
+</section>
+
+<!-- COURSE / SEQUENCE -->
+<section class="course" id="course">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The course</h2>
+      <p>Three disciplines, one race. Here's what a season with the club looks like, leg by leg.</p>
+    </div>
+    <div class="sequence">
+      <div class="leg">
+        <div class="leg-num eyebrow-num">01</div>
+        <h3>Swim</h3>
+        <p>Weekly pool sessions with structured sets for every level. Technique-focused and coached, open water practice before races.</p>
+        <a href="swim.html">Learn more</a>
+      </div>
+      <div class="leg">
+        <div class="leg-num eyebrow-num">02</div>
+        <h3>Bike</h3>
+        <p>Group rides and turbo sessions to build endurance and bike handling, from your first ride to race pace.</p>
+        <a href="bike.html">Learn more</a>
+      </div>
+      <div class="leg">
+        <div class="leg-num eyebrow-num">03</div>
+        <h3>Run</h3>
+        <p>Track and river-path sessions covering speed, endurance, and brick runs straight off the bike.</p>
+        <a href="run.html">Learn more</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-img">
+      <!-- TODO: Teamfoto einsetzen -->
+      <img src="images/tri-group.jpg" alt="ICTRI training session">
+    </div>
+    <div>
+      <h2>Student-run, all levels welcome</h2>
+      <p>ICTRI is a student-led community at Imperial College London, backed by the Student Union. Whether you're chasing a podium or your first triathlon, there's a session for you — most members start with no multisport experience at all.</p>
+      <p style="margin-top:16px;">We train together across all three disciplines, race together at events across the UK, and look out for each other along the way.</p>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section class="join" id="join">
+  <div class="wrap join-inner">
+    <div>
+      <h2>Ready to tri?</h2>
+      <p>Join through the Imperial College Union. Membership gets you every session, every race, every social.</p>
+    </div>
+    <a href="tri-club.html#join" class="btn-primary">Become a member</a>
+  </div>
+</section>
+
+<!-- NEWS + BLOG -->
+<section class="news" id="news">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>News &amp; Blog</h2>
+    </div>
+    <div class="news-grid">
+      <div>
+        <div class="news-col-label">Latest news</div>
+        <div id="nb-news-list">
+          <p class="news-empty">No news at the moment.</p>
+        </div>
+      </div>
+      <div>
+        <div class="news-col-label">From the blog</div>
+        <div id="nb-blog-grid">
+          <p class="news-empty">No posts yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <img src="images/ictri.svg" alt="ICTRI">
+      <p class="tagline">Imperial College Triathlon Club — student-run. All levels welcome.</p>
+    </div>
+    <div>
+      <h4>Train</h4>
+      <ul>
+        <li><a href="swim.html">Swim</a></li>
+        <li><a href="bike.html">Bike</a></li>
+        <li><a href="run.html">Run</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Club</h4>
+      <ul>
+        <li><a href="tri-club.html">About</a></li>
+        <li><a href="tri-club.html#join">Join</a></li>
+        <li><a href="tri-index-v2.html#news">News &amp; Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:triathlon@imperial.ac.uk">triathlon@imperial.ac.uk</a></li>
+        <li><a href="https://www.instagram.com/ictriathlon" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.imperialcollegeunion.org/activities/a-to-z/" target="_blank" rel="noopener">Imperial College Union</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    © Imperial College Triathlon Club 2026. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var toggle = document.getElementById('navToggle');
+    var panel  = document.getElementById('mobilePanel');
+    toggle.addEventListener('click', function(){
+      var open = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    panel.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        panel.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
